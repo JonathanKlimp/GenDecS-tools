@@ -84,7 +84,9 @@ public class ClinVarFilter {
                             currentLine, Objects.requireNonNull(getRating(this.starRating)))) {
                         continue;
                     }
-                    if (isPathogenic(currentLine)) {
+                    if (currentLine.startsWith("#")) {
+                        writer.write(currentLine + System.getProperty("line.separator"));
+                    } else if (isPathogenic(currentLine)) {
                         writer.write(currentLine + System.getProperty("line.separator"));
                     }
                 }
@@ -105,10 +107,10 @@ public class ClinVarFilter {
     private static boolean isPathogenic(String variant) {
         ArrayList<String> clinSig =
                 new ArrayList<>(List.of("likely_pathogenic", "pathogenic", "pathogenic/likely_pathogenic",
-                        "Uncertain_significance"));
+                        "uncertain_significance"));
         String[] splittedLine = variant.split("\t");
-        String[] infoString = splittedLine[7].split(";");
 
+        String[] infoString = splittedLine[7].split(";");
         for (String i : infoString) {
             if (i.contains("CLNSIG")) {
                 if (clinSig.contains(i.split("=")[1].toLowerCase())) {
