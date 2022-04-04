@@ -64,7 +64,8 @@ public class ClinVarFilter {
      * @return String with the location of the filtered file.
      */
     public String removeStatus() {
-        String pathName = String.format("data/Filtered_Clinvar_%s.vcf", this.starRating);
+        String clinvarLoc = clinvarLocation.replace(".vcf", "");
+        String pathName = String.format(clinvarLoc + "_filtered_%s.vcf", this.starRating);
         Path path = Paths.get(pathName);
         if (path.toFile().isFile()) {
             return pathName;
