@@ -30,6 +30,7 @@ public class VariantMatcher {
         Map<String, Pattern> stringsToFind = new HashMap<>();
         try {
             Scanner reader = new Scanner(vcfFile);
+            logger.info("Building regex of the variants in: " + vcfFile.toString());
             while (reader.hasNextLine()) {
                 String data = reader.nextLine();
                 if (data.startsWith("#")) {
