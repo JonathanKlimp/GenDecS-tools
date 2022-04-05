@@ -57,8 +57,8 @@ public class ClinVarFilter {
     }
 
     /**
-     * Method removeStatus checks if variant lines are the correct given starrating and
-     * if its pathogenic. If these checks result in true the variant line is written to a
+     * Method removeStatus checks if variant lines are the correct given star rating and
+     * if it's pathogenic. If these checks result in true the variant line is written to a
      * new file.
      *
      * @return String with the location of the filtered file.

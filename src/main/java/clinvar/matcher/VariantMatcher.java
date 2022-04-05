@@ -23,8 +23,9 @@ public class VariantMatcher {
     /**
      * Method matchWithClinvar reads given vcf file with variants and builds regex for each line.
      * Which is then used to match this with variants in the clinvar vcf file. The found matches are
-     * filtered on the variant being pathogenic or not. The remaining variants are added to the
-     * Variants class.
+     * written to a new file.
+     *
+     * @return String with the location of the new file.
      */
     public String matchWithClinvar() {
         Map<String, Pattern> stringsToFind = new HashMap<>();
@@ -32,7 +33,7 @@ public class VariantMatcher {
             ArrayList<String> header = new ArrayList<>();
             File vcfFile = new File(this.vcfFile);
             Scanner reader = new Scanner(vcfFile);
-            logger.info("Building regex of the variants in: " + vcfFile.toString());
+            logger.info("Building regex of the variants in: " + vcfFile);
             while (reader.hasNextLine()) {
                 String currentLine = reader.nextLine();
                 if (currentLine.startsWith("#")) {
@@ -70,8 +71,6 @@ public class VariantMatcher {
         BufferedWriter writerResult = new BufferedWriter(new FileWriter(resultFile));
         BufferedWriter writerClinvar = new BufferedWriter(new FileWriter(resultFileClinvar));
 
-//        VcfFile.writeHeader(writerClinvar, "clinvar");
-//        VcfFile.writeHeader(writerResult, "result");
         for(String headerLine : header) {
             writerResult.write(headerLine + System.getProperty("line.separator"));
         }

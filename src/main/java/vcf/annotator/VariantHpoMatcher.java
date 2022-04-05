@@ -19,6 +19,11 @@ public class VariantHpoMatcher {
         return this.getHpo(geneSymbol);
     }
 
+    /**
+     * Method that returns the gene from a variant line. Variant from V.I.P output is expected
+     * @param variant String with the variant line
+     * @return String with the gene symbol
+     */
     public String getGene(String variant) {
         if(variant.equals("")) {
             return "";
@@ -28,6 +33,12 @@ public class VariantHpoMatcher {
         return infoString[3];
     }
 
+    /**
+     * Method that returns an array list with HPO terms for a given gene. It reads the file
+     * gene_to_phenotype.txt and gathers all HPO terms that are associated with the given gene.
+     * @param geneSymbol String with the gene symbol
+     * @return ArrayList<String> with all found HPO terms
+     */
     public ArrayList<String> getHpo(String geneSymbol) {
         ArrayList<String> hpoTerms = new ArrayList<>();
         try {

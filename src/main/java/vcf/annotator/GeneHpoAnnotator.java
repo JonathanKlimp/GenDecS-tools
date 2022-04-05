@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GeneHpoAnnotator {
-    private final String vcfDatalocation;
 
-    public GeneHpoAnnotator(String vcfDataLocation) {
-        this.vcfDatalocation = vcfDataLocation;
-    }
-
-    public String annotateVcfWithHpo() throws IOException {
-        File dataFile = new File(this.vcfDatalocation);
+    /**
+     * Static method that reads a vcf file and annotates each variant with its associated HPO terms
+     * @return String with the new written file location
+     * @throws IOException when no file is found
+     */
+    public static String annotateVcfWithHpo(String vcfDatalocation) throws IOException {
+        File dataFile = new File(vcfDatalocation);
         Scanner reader = new Scanner(dataFile);
-        String vcfDataLocation = this.vcfDatalocation.replace(".vcf", "");
+        String vcfDataLocation = vcfDatalocation.replace(".vcf", "");
         String pathName = vcfDataLocation + "_annotated_hpo.vcf";
 
         File annotatedFile = new File(pathName);

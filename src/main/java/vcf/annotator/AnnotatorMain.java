@@ -5,8 +5,7 @@ import java.io.IOException;
 public class AnnotatorMain {
     public static void main(String[] args) throws IOException {
         String vcfDataLocation = args[0];
-        GeneHpoAnnotator geneHpoAnnotator = new GeneHpoAnnotator(vcfDataLocation);
-        String dataLocation = geneHpoAnnotator.annotateVcfWithHpo();
+        String dataLocation = GeneHpoAnnotator.annotateVcfWithHpo(vcfDataLocation);
         System.out.println(dataLocation);
     }
 }
