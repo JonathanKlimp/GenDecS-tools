@@ -1,0 +1,3 @@
+# This is a test vcf file with 1 variant.
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+1	17588689	.	T	A	.	PASS	CSQ=A|missense_variant|MODERATE|PADI3|51702|Transcript|NM_016233.2|protein_coding|3/16||NM_016233.2:c.335T>A|NP_057317.2:p.Leu112His|375/3189|335/1995|112/664|L/H|cTc/cAc|rs142129409&CM1615418|1||1||1|EntrezGene|||||0|0.993||pathogenic||1&1|27866708&28550590|||||||-38|17|11|15|0.00|0.00|0.00|0.00|PADI3|VUS|0.8706367||AR||1:17588689-17588689|0.00452301|1;VIPC=LP;VIPL=.;VIPP=filter|vkgl|clinVar|exit_lp
