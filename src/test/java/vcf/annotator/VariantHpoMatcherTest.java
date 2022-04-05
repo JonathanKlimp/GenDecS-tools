@@ -32,7 +32,7 @@ class VariantHpoMatcherTest {
         VariantHpoMatcher variantHpoMatcher = new VariantHpoMatcher();
         String gene = "PADI3";
         ArrayList<String> hpoTermsExcp = new ArrayList<>(List.of("Pili canaliculi", "Uncombable hair", "Dry hair", "Autosomal recessive inheritance", "Woolly hair", "Patchy alopecia", "White hair", "Coarse hair", "Trichodysplasia"));
-        ArrayList<String> hpoTerms = variantHpoMatcher.getHpo(gene);
+        ArrayList<String> hpoTerms = variantHpoMatcher.getHpo(gene, "data/genes_to_phenotype.txt");
         assertEquals(hpoTermsExcp, hpoTerms);
     }
 

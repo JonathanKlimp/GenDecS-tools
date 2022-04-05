@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GeneHpoAnnotatorTest {
     @Test
     void annotateVcfWithHpo_NormalInput() throws IOException {
-        String fileLocation = GeneHpoAnnotator.annotateVcfWithHpo("testdata/threeVariants.vcf");
+        String fileLocation = GeneHpoAnnotator.annotateVcfWithHpo("testdata/threeVariants.vcf", "data/genes_to_phenotype.txt");
         List<String> annotatedLines = Files.readAllLines(Path.of(fileLocation));
         List<String> expectedList = new ArrayList<>();
         expectedList.add("# This is a test vcf file with 1 variant.");

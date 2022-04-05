@@ -14,7 +14,7 @@ public class GeneHpoAnnotator {
      * @return String with the new written file location
      * @throws IOException when no file is found
      */
-    public static String annotateVcfWithHpo(String vcfDatalocation) throws IOException {
+    public static String annotateVcfWithHpo(String vcfDatalocation, String genesToPhenotypeLoc) throws IOException {
         File dataFile = new File(vcfDatalocation);
         Scanner reader = new Scanner(dataFile);
         String vcfDataLocation = vcfDatalocation.replace(".vcf", "");
@@ -29,7 +29,7 @@ public class GeneHpoAnnotator {
             if (currentLine.startsWith("#")) {
                 writer.write(currentLine + System.getProperty("line.separator"));
             } else {
-                ArrayList<String> hpoTerms = variantHpoMatcher.matchVariantWithHpo(currentLine);
+                ArrayList<String> hpoTerms = variantHpoMatcher.matchVariantWithHpo(currentLine, genesToPhenotypeLoc);
                 writer.write(currentLine + '\t' + hpoTerms
                         + System.getProperty("line.separator"));
             }

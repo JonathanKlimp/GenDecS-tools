@@ -3,7 +3,6 @@ package vcf.annotator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class VariantHpoMatcher {
@@ -12,11 +11,12 @@ public class VariantHpoMatcher {
      * Method that gets a variant string and returns a list with HPO terms
      * associated with the gene in the variant.
      * @param variant Sting of a variant from a vcf file
+     * @param genesToPhenotypeLoc location of genes_to_phenotype.txt
      * @return ArrayList with associated HPO terms as strings
      */
-    public ArrayList<String> matchVariantWithHpo(String variant) {
+    public ArrayList<String> matchVariantWithHpo(String variant, String genesToPhenotypeLoc) {
         String geneSymbol = this.getGene(variant);
-        return this.getHpo(geneSymbol);
+        return this.getHpo(geneSymbol, genesToPhenotypeLoc);
     }
 
     /**
@@ -39,10 +39,10 @@ public class VariantHpoMatcher {
      * @param geneSymbol String with the gene symbol
      * @return ArrayList<String> with all found HPO terms
      */
-    public ArrayList<String> getHpo(String geneSymbol) {
+    public ArrayList<String> getHpo(String geneSymbol, String genesToPhenotypeLoc) {
         ArrayList<String> hpoTerms = new ArrayList<>();
         try {
-            File file = new File("data/genes_to_phenotype.txt");
+            File file = new File(genesToPhenotypeLoc);
             Scanner reader = new Scanner(file);
             while (reader.hasNextLine()) {
                 String currentLine = reader.nextLine();
