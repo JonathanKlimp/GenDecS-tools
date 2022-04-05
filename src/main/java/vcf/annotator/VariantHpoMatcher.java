@@ -3,6 +3,7 @@ package vcf.annotator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class VariantHpoMatcher {
@@ -18,13 +19,16 @@ public class VariantHpoMatcher {
         return this.getHpo(geneSymbol);
     }
 
-    private String getGene(String variant) {
+    public String getGene(String variant) {
+        if(variant.equals("")) {
+            return "";
+        }
         String[] splittedLine = variant.split("\t");
         String[] infoString = splittedLine[7].split("\\|");
         return infoString[3];
     }
 
-    private ArrayList<String> getHpo(String geneSymbol) {
+    public ArrayList<String> getHpo(String geneSymbol) {
         ArrayList<String> hpoTerms = new ArrayList<>();
         try {
             File file = new File("data/genes_to_phenotype.txt");
