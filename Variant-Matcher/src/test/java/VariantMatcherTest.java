@@ -1,5 +1,3 @@
-package clinvar.matcher;
-
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -8,7 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class VariantMatcherTest {
     @Test

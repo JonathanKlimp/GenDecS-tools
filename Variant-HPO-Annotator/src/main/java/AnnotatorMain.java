@@ -1,5 +1,3 @@
-package vcf.annotator;
-
 import java.io.IOException;
 
 public class AnnotatorMain {

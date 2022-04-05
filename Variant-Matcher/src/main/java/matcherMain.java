@@ -1,5 +1,3 @@
-package clinvar.matcher;
-
 public class matcherMain {
     public static void main(String[] args) {
         String clinvarLocation = args[0];

@@ -1,2 +1,5 @@
 rootProject.name = 'GenDecS-tools'
+include 'ClinVar-Filter'
+include 'Variant-Matcher'
+include 'Variant-HPO-Annotator'
 
