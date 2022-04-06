@@ -1,4 +1,4 @@
-public class matcherMain {
+public class MatcherMain {
     public static void main(String[] args) {
         String clinvarLocation = args[0];
         String vcfDataLocation = args[1];
