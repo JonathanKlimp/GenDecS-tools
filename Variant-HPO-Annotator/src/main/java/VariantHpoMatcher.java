@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class VariantHpoMatcher {
@@ -12,7 +13,7 @@ public class VariantHpoMatcher {
      * @param genesToPhenotypeLoc location of genes_to_phenotype.txt
      * @return ArrayList with associated HPO terms as strings
      */
-    public ArrayList<String> matchVariantWithHpo(String variant, String genesToPhenotypeLoc) {
+    public HashMap<String, ArrayList<String>> matchVariantWithHpo(String variant, String genesToPhenotypeLoc) {
         String geneSymbol = this.getGene(variant);
         return this.getHpo(geneSymbol, genesToPhenotypeLoc);
     }
@@ -37,8 +38,10 @@ public class VariantHpoMatcher {
      * @param geneSymbol String with the gene symbol
      * @return ArrayList<String> with all found HPO terms
      */
-    public ArrayList<String> getHpo(String geneSymbol, String genesToPhenotypeLoc) {
+    public HashMap<String, ArrayList<String>> getHpo(String geneSymbol, String genesToPhenotypeLoc) {
+        HashMap<String, ArrayList<String>> termsAndDiseases = new HashMap<>();
         ArrayList<String> hpoTerms = new ArrayList<>();
+        ArrayList<String> diseases = new ArrayList<>();
         try {
             File file = new File(genesToPhenotypeLoc);
             Scanner reader = new Scanner(file);
@@ -51,12 +54,15 @@ public class VariantHpoMatcher {
                     String hpoTerm = lineSplit[3];
                     String diseaseId = lineSplit[8];
                     hpoTerms.add(hpoTerm.trim());
+                    diseases.add(diseaseId.trim());
                 }
             }
-            return hpoTerms;
+            termsAndDiseases.put("hpoTerms", hpoTerms);
+            termsAndDiseases.put("diseaseIds", diseases);
+            return termsAndDiseases;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return hpoTerms;
+        return termsAndDiseases;
     }
 }

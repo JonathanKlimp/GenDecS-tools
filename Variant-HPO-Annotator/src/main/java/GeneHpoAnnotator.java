@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class GeneHpoAnnotator {
@@ -27,13 +28,16 @@ public class GeneHpoAnnotator {
             if (currentLine.startsWith("#")) {
                 writer.write(currentLine + System.getProperty("line.separator"));
             } else {
-                ArrayList<String> hpoTerms = variantHpoMatcher.matchVariantWithHpo(currentLine, genesToPhenotypeLoc);
-                writer.write(currentLine + '\t' + hpoTerms
+                HashMap<String, ArrayList<String>> termsAndDiseases = variantHpoMatcher.matchVariantWithHpo(currentLine, genesToPhenotypeLoc);
+                writer.write(currentLine + '|'
+                        + termsAndDiseases.get("hpoTerms")
+                        + "|"
+                        + termsAndDiseases.get("diseaseIds")
                         + System.getProperty("line.separator"));
             }
         }
         reader.close();
         writer.close();
-        return vcfDataLocation;
+        return annotatedFile.getAbsolutePath();
     }
 }

@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,8 +29,12 @@ class VariantHpoMatcherTest {
         VariantHpoMatcher variantHpoMatcher = new VariantHpoMatcher();
         String gene = "PADI3";
         ArrayList<String> hpoTermsExcp = new ArrayList<>(List.of("Pili canaliculi", "Uncombable hair", "Dry hair", "Autosomal recessive inheritance", "Woolly hair", "Patchy alopecia", "White hair", "Coarse hair", "Trichodysplasia"));
-        ArrayList<String> hpoTerms = variantHpoMatcher.getHpo(gene, "data/genes_to_phenotype.txt");
-        assertEquals(hpoTermsExcp, hpoTerms);
+        ArrayList<String> diseaseIdsExcp = new ArrayList<>(List.of("OMIM:191480", "OMIM:191480", "OMIM:191480", "OMIM:191480", "ORPHA:1410", "ORPHA:1410", "ORPHA:1410", "ORPHA:1410", "ORPHA:1410"));
+        HashMap<String, ArrayList<String>> termsAndDiseasesExcp = new HashMap<>();
+        termsAndDiseasesExcp.put("hpoTerms", hpoTermsExcp);
+        termsAndDiseasesExcp.put("diseaseIds", diseaseIdsExcp);
+        HashMap<String, ArrayList<String>> termsAndDiseases = variantHpoMatcher.getHpo(gene, "/Users/jonathan/Documents/GitHub/GenDecS-tools/data/genes_to_phenotype.txt");
+        assertEquals(termsAndDiseasesExcp, termsAndDiseases);
     }
 
 
