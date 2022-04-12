@@ -4,8 +4,8 @@ This repository contains the tools that are used to process and annotate VCF dat
 These tools are:
 
 ## ClinVar filter
-a ClinVar filter which filters ClinVar on high quality variants and phenotypic/
-likely phenotypic/ uncertain significance.  
+a ClinVar filter which filters ClinVar on high quality variants and pathogenic/
+likely pathogenic/ uncertain significance.  
 The output is a string with the location of the new filtered ClinVar file.
 
 
