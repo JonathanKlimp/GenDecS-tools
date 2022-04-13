@@ -2,6 +2,8 @@ import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
+
 public class FilterMain {
     private static final Logger logger = LoggerFactory.getLogger(FilterMain.class);
 
@@ -23,10 +25,12 @@ public class FilterMain {
 
             if (commandLine.hasOption("output")) {
                 ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, clinvarLocation, commandLine.getOptionValue("output"));
-                logger.info("Created the filtered file at the following location: " + clinVarFilter.removeStatus());
+                String fileLoc = clinVarFilter.removeStatus();
+                logger.info("Created the filtered file at the following location: " + fileLoc);
             } else {
                 ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, clinvarLocation, null);
-                logger.info("Created the filtered file at the following location: " + clinVarFilter.removeStatus());
+                String fileLoc = clinVarFilter.removeStatus();
+                logger.info("Created the filtered file at the following location: " + fileLoc);
             }
         }
         catch (ParseException e) {
