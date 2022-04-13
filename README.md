@@ -12,11 +12,12 @@ The output is a string with the location of the new filtered ClinVar file.
 ### Requirements
 * ClinVar vcf file which can be downloaded from: [Clinvar](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/)
 
-### Usage
+### Usage 
 ```
-java -jar xxx.jar location_of_clinvar
+java -jar ClinVar-Filter-[version].jar [options] [location of clinvar]
 ```
-Output: location of the new written filtered ClinVar file.
+--help for options  
+Output: filtered ClinVar file.
 
 ## VariantMatcher
 
@@ -34,10 +35,10 @@ will also work.
 
 ### Usage
 ```
-java -jar xxx.jar location_of_filtered_clinvar location_of_vcf_data
+java -jar Variant-Matcher-[version].jar [options] [location_of_filtered_clinvar] [location_of_vcf_data]
 ```
-
-Output: location of the new wirrten matched vcf data file.
+--help for options
+Output: vcf file that is matched with ClinVar
 
 ## VCF HPO annotator
 An annotator tool which annotates HPO terms which are associated with the gene of a variant.  
@@ -53,7 +54,7 @@ The output of the VariantMatcher tool is expected as vcf file.
 ### Usage
 
 ```
-java -jar xxx.jar location_of_vcf_data location_of_genes_to_phenotype.txt
+java -jar Variant-HPO-Annotator-[version].jar [options] [location_of_vcf_data] [location_of_genes_to_phenotype.txt]
 ```
-
-Output: location of the with HPO terms annotated vcf data file.
+--help for options
+Output: annotated vcf file with HPO terms and disease id's
