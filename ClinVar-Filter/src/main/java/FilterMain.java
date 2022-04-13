@@ -2,8 +2,6 @@ import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Locale;
-
 public class FilterMain {
     private static final Logger logger = LoggerFactory.getLogger(FilterMain.class);
 

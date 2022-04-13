@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,7 @@ class VariantHpoMatcherTest {
         HashMap<String, ArrayList<String>> termsAndDiseasesExcp = new HashMap<>();
         termsAndDiseasesExcp.put("hpoTerms", hpoTermsExcp);
         termsAndDiseasesExcp.put("diseaseIds", diseaseIdsExcp);
-        HashMap<String, ArrayList<String>> termsAndDiseases = variantHpoMatcher.getHpo(gene, "/Users/jonathan/Documents/GitHub/GenDecS-tools/data/genes_to_phenotype.txt");
+        HashMap<String, ArrayList<String>> termsAndDiseases = variantHpoMatcher.getHpo(gene, new File("/Users/jonathan/Documents/GitHub/GenDecS-tools/data/genes_to_phenotype.txt"));
         assertEquals(termsAndDiseasesExcp, termsAndDiseases);
     }
 
