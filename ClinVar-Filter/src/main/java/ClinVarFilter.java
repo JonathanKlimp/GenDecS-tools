@@ -5,21 +5,30 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class ClinVarFilter {
     private final StarRating starRating;
-    private final String clinvarLocation;
+    private final File clinvarFile;
+    private final String outputLocation;
     private static final Logger logger = LoggerFactory.getLogger(ClinVarFilter.class);
 
-    public ClinVarFilter(StarRating starRating, String clinvarLocation) {
+    public ClinVarFilter(StarRating starRating, String clinvarLocation, String outputLocation) {
         this.starRating = starRating;
-        this.clinvarLocation = clinvarLocation;
+        this.clinvarFile = new File(clinvarLocation);
+
+        if (outputLocation == null) {
+            String clinvarLoc = clinvarLocation.replace(".vcf", "");
+            this.outputLocation = String.format(clinvarLoc + "_filtered_%s.vcf", starRating);
+        } else {
+            if (!outputLocation.endsWith("/")) {
+                throw new IllegalArgumentException("Given output location is not a directory: " + outputLocation);
+            } else {
+                File clinvarFile = new File(clinvarLocation);
+                String clinvarName = clinvarFile.getName().replace(".vcf", "");
+                this.outputLocation = String.format(outputLocation + clinvarName + "_filtered_%s.vcf", starRating);
+            }
+        }
     }
 
     private ArrayList<String> getRating(StarRating starRating) {
@@ -65,21 +74,16 @@ public class ClinVarFilter {
      *
      * @return String with the location of the filtered file.
      */
-    public String removeStatus() {
-        String clinvarLoc = clinvarLocation.replace(".vcf", "");
-        String pathName = String.format(clinvarLoc + "_filtered_%s.vcf", this.starRating);
-        Path path = Paths.get(pathName);
-        if (path.toFile().isFile()) {
-            return pathName;
-        } else {
-            logger.debug("Creating file: " + pathName);
-            File filteredClinVar = new File(pathName);
-            try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(filteredClinVar));
+    public String removeStatus(){
+        File filteredClinVar = new File(this.outputLocation);
+        try {
+            if (filteredClinVar.createNewFile()) {
+                logger.debug("Creating file: " + this.outputLocation);
 
-                File fileObject = new File(clinvarLocation);
-                Scanner reader = new Scanner(fileObject);
-                logger.debug("Removing " + this.starRating + "from: " + clinvarLocation);
+                BufferedWriter writer = new BufferedWriter(new FileWriter(this.outputLocation));
+
+                Scanner reader = new Scanner(this.clinvarFile);
+                logger.debug("Removing " + this.starRating + "from: " + this.clinvarFile);
                 while (reader.hasNextLine()) {
                     String currentLine = reader.nextLine();
                     if (stringContainsItemFromList(
@@ -94,12 +98,12 @@ public class ClinVarFilter {
                 }
                 reader.close();
                 writer.close();
-                return pathName;
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-            return "";
+            return this.outputLocation;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return "";
     }
 
     private static boolean stringContainsItemFromList(String inputString, ArrayList<String> items) {

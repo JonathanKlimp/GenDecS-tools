@@ -12,7 +12,7 @@ class ClinVarFilterTest {
 
     @Test
     void removeStatus_noPathogenicVariants() throws IOException {
-        ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, "testdata/noPathogenic.vcf");
+        ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, "/Users/jonathan/Documents/GitHub/GenDecS-tools/testdata/noPathogenic.vcf", null);
         String clinvarLoc = clinVarFilter.removeStatus();
         List<String> listClinvar = Files.readAllLines(Path.of(clinvarLoc));
         List<String> expectedList = new ArrayList<>();
@@ -24,7 +24,7 @@ class ClinVarFilterTest {
 
     @Test
     void removeSatus_pathogenicVariants() throws IOException {
-        ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, "testdata/pathogenic.vcf");
+        ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, "/Users/jonathan/Documents/GitHub/GenDecS-tools/testdata/pathogenic.vcf", null);
         String clinvarLoc = clinVarFilter.removeStatus();
         List<String> listClinvar = Files.readAllLines(Path.of(clinvarLoc));
         List<String> expectedList = new ArrayList<>();
@@ -39,7 +39,7 @@ class ClinVarFilterTest {
 
     @Test
     void removeSatus_starRating() throws IOException {
-        ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, "testdata/varyingStarRating.vcf");
+        ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, "/Users/jonathan/Documents/GitHub/GenDecS-tools/testdata/varyingStarRating.vcf", null);
         String clinvarLoc = clinVarFilter.removeStatus();
         List<String> listClinvar = Files.readAllLines(Path.of(clinvarLoc));
         List<String> expectedList = new ArrayList<>();
@@ -53,7 +53,7 @@ class ClinVarFilterTest {
 
     @Test
     void removeSatus_starRatingThreeStar() throws IOException {
-        ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.TWOSTAR, "testdata/varyingStarRating.vcf");
+        ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.TWOSTAR, "/Users/jonathan/Documents/GitHub/GenDecS-tools/testdata/varyingStarRating.vcf", null);
         String clinvarLoc = clinVarFilter.removeStatus();
         List<String> listClinvar = Files.readAllLines(Path.of(clinvarLoc));
         List<String> expectedList = new ArrayList<>();
@@ -62,5 +62,26 @@ class ClinVarFilterTest {
         expectedList.add("1\t11169679\t1296984\tG\tT\t.\t.\tALLELEID=1286774;CLNDISDB=MONDO:MONDO:0016054,MedGen:C0266449,Orphanet:ORPHA199633;CLNDN=Brain_malformation;CLNHGVS=NC_000001.10:g.11169679G>T;CLNREVSTAT=reviewed_by_expert_panel;CLNSIG=Uncertain_significance;CLNVC=single_nucleotide_variant;CLNVCSO=SO:0001483;GENEINFO=MTOR:2475;MC=SO:0001627|intron_variant;ORIGIN=1");
         Files.delete(Path.of(clinvarLoc));
         assertEquals(expectedList, listClinvar);
+    }
+
+    @Test
+    void removeStatus_noPathogenicVariants_WithLocation() throws IOException {
+        ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, "/Users/jonathan/Documents/GitHub/GenDecS-tools/testdata/noPathogenic.vcf", "/Users/jonathan/Documents/GitHub/GenDecS-tools/data/");
+        String clinvarLoc = clinVarFilter.removeStatus();
+        List<String> listClinvar = Files.readAllLines(Path.of(clinvarLoc));
+        List<String> expectedList = new ArrayList<>();
+        expectedList.add("# This is a test vcf file with no pathogenic variants");
+        expectedList.add("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO");
+        Files.delete(Path.of(clinvarLoc));
+        assertEquals(expectedList, listClinvar);
+    }
+
+    @Test
+    void removeStatus_noPathogenicVariants_WithLocationNoDir() {
+        try {
+            ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, "/Users/jonathan/Documents/GitHub/GenDecS-tools/testdata/noPathogenic.vcf", "/Users/jonathan/Documents/GitHub/GenDecS-tools/data");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Given output location is not a directory: /Users/jonathan/Documents/GitHub/GenDecS-tools/data", e.getMessage());
+        }
     }
 }
