@@ -3,7 +3,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
-import java.io.IOException;
 
 public class AnnotatorMain {
     private static final Logger logger = LogManager.getLogger(AnnotatorMain.class);
