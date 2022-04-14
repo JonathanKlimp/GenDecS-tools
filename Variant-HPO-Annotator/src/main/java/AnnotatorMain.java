@@ -1,11 +1,12 @@
 import org.apache.commons.cli.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
+import java.io.File;
 import java.io.IOException;
 
 public class AnnotatorMain {
-    private static final Logger logger = LoggerFactory.getLogger(AnnotatorMain.class);
+    private static final Logger logger = LogManager.getLogger(AnnotatorMain.class);
 
     public static void main(String[] args) throws IOException {
         CommandLineParser parser = new DefaultParser();
@@ -16,29 +17,34 @@ public class AnnotatorMain {
         try {
             CommandLine commandLine = parser.parse(options, args);
             if (commandLine.hasOption("help")) {
-                HelpFormatter helpFormatter = new HelpFormatter();
-                helpFormatter.printHelp("help", options);
-                System.out.println("program usage: " +
-                        "java -jar Variant-HPO-Annotator-[version] [options] [location of vcf data] [location of genes_to_phenotype.txt]");
-                System.exit(0);
+                printHelp(options);
             }
             String vcfDataLocation = commandLine.getArgList().get(0);
             String genesToPhenotypeLoc = commandLine.getArgList().get(1);
-
+            String fileLocation;
             if (commandLine.hasOption("output")) {
+                File outputLoc = new File(commandLine.getOptionValue("output"));
+                if (!outputLoc.isDirectory()) {
+                    throw new IllegalArgumentException("Given output location is not a directory: " + commandLine.getOptionValue("output"));
+                }
                 GeneHpoAnnotator geneHpoAnnotator = new GeneHpoAnnotator(vcfDataLocation, genesToPhenotypeLoc, commandLine.getOptionValue("output"));
-                String dataLocation = geneHpoAnnotator.annotateVcfWithHpo();
-
-                logger.info("Created the annotated file at the following location: " + dataLocation);
+                fileLocation = geneHpoAnnotator.annotateVcfWithHpo();
             } else {
                 GeneHpoAnnotator geneHpoAnnotator = new GeneHpoAnnotator(vcfDataLocation, genesToPhenotypeLoc, null);
-                String dataLocation = geneHpoAnnotator.annotateVcfWithHpo();
-
-                logger.info("Created the annotated file at the following location: " + dataLocation);
+                fileLocation = geneHpoAnnotator.annotateVcfWithHpo();
             }
+            logger.info("Created the annotated file at the following location: " + fileLocation);
         }
         catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void printHelp(Options options) {
+        HelpFormatter helpFormatter = new HelpFormatter();
+        helpFormatter.printHelp("help", options);
+        System.out.println("program usage: " +
+                "java -jar Variant-HPO-Annotator-[version] [options] [location of vcf data] [location of genes_to_phenotype.txt]");
+        System.exit(0);
     }
 }

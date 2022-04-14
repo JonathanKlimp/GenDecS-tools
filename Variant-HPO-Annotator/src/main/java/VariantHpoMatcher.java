@@ -3,8 +3,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class VariantHpoMatcher {
+    private static final Logger logger = LogManager.getLogger(VariantHpoMatcher.class);
 
     /**
      * Method that gets a variant string and returns a list with HPO terms
@@ -29,6 +32,7 @@ public class VariantHpoMatcher {
         }
         String[] splittedLine = variant.split("\t");
         String[] infoString = splittedLine[7].split("\\|");
+        logger.trace("found the following gene: " + infoString[3] + " from: " + variant);
         return infoString[3];
     }
 
