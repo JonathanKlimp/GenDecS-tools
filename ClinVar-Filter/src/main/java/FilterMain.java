@@ -1,9 +1,11 @@
 import org.apache.commons.cli.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+import java.io.File;
 
 public class FilterMain {
-    private static final Logger logger = LoggerFactory.getLogger(FilterMain.class);
+    private static final Logger logger = LogManager.getLogger(FilterMain.class);
 
     public static void main(String[] args) {
         CommandLineParser parser = new DefaultParser();
@@ -13,26 +15,34 @@ public class FilterMain {
         try {
             CommandLine commandLine = parser.parse(options, args);
             if (commandLine.hasOption("help")) {
-                HelpFormatter helpFormatter = new HelpFormatter();
-                helpFormatter.printHelp("help", options);
-                System.out.println("program usage: " +
-                        "java -jar ClinVar-Filter-[version] [options] [dir to clinvar]");
-                System.exit(0);
+                printHelp(options);
             }
             String clinvarLocation = commandLine.getArgList().get(0);
-
+            String fileLoc;
             if (commandLine.hasOption("output")) {
+                File outputLoc = new File(commandLine.getOptionValue("output"));
+                if (!outputLoc.isDirectory()) {
+                    throw new IllegalArgumentException("Given output location is not a directory: " + commandLine.getOptionValue("output"));
+                }
                 ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, clinvarLocation, commandLine.getOptionValue("output"));
-                String fileLoc = clinVarFilter.removeStatus();
-                logger.info("Created the filtered file at the following location: " + fileLoc);
+                fileLoc = clinVarFilter.removeStatus();
             } else {
                 ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, clinvarLocation, null);
-                String fileLoc = clinVarFilter.removeStatus();
-                logger.info("Created the filtered file at the following location: " + fileLoc);
+                fileLoc = clinVarFilter.removeStatus();
             }
+            logger.info("Created the filtered file at the following location: " + fileLoc);
+            System.exit(0);
         }
         catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void printHelp(Options options) {
+        HelpFormatter helpFormatter = new HelpFormatter();
+        helpFormatter.printHelp("help", options);
+        System.out.println("program usage: " +
+                "java -jar ClinVar-Filter-[version] [options] [dir to clinvar]");
+        System.exit(0);
     }
 }
