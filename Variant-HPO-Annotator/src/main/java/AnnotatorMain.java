@@ -8,7 +8,7 @@ import java.io.IOException;
 public class AnnotatorMain {
     private static final Logger logger = LogManager.getLogger(AnnotatorMain.class);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         CommandLineParser parser = new DefaultParser();
         Options options = new Options();
         options.addOption("o", "output", true, "output directory");
@@ -29,7 +29,7 @@ public class AnnotatorMain {
                 if (!outputLoc.exists() && !outputLoc.isDirectory()) {
                     throw new IllegalArgumentException("Given output location is not a directory: " + outputLocation);
                 }
-                if(!commandLine.getOptionValue("output").endsWith("/")) {
+                if(!outputLocation.endsWith("/")) {
                     outputLocation = commandLine.getOptionValue("output") + "/";
                 }
                 GeneHpoAnnotator geneHpoAnnotator = new GeneHpoAnnotator(vcfDataLocation, genesToPhenotypeLoc, outputLocation);

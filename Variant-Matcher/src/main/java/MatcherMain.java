@@ -29,11 +29,15 @@ public class MatcherMain {
             String vcfDataLocation = commandLine.getArgList().get(1);
             String fileLocation;
             if (commandLine.hasOption("output")) {
-                File outputLoc = new File(commandLine.getOptionValue("output"));
+                String outputLocation = commandLine.getOptionValue("output");
+                File outputLoc = new File(outputLocation);
                 if (!outputLoc.isDirectory()) {
-                    throw new IllegalArgumentException("Given output location is not a directory: " + commandLine.getOptionValue("output"));
+                    throw new IllegalArgumentException("Given output location is not a directory: " + outputLocation);
                 }
-                VariantMatcher variantMatcher = new VariantMatcher(clinvarLocation, vcfDataLocation, commandLine.getOptionValue("output"));
+                if(!outputLocation.endsWith("/")) {
+                    outputLocation = commandLine.getOptionValue("output") + "/";
+                }
+                VariantMatcher variantMatcher = new VariantMatcher(clinvarLocation, vcfDataLocation, outputLocation);
                 fileLocation = variantMatcher.matchWithClinvar();
             } else {
                 VariantMatcher variantMatcher = new VariantMatcher(clinvarLocation, vcfDataLocation, null);

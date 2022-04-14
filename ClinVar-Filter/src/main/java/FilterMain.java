@@ -20,11 +20,15 @@ public class FilterMain {
             String clinvarLocation = commandLine.getArgList().get(0);
             String fileLoc;
             if (commandLine.hasOption("output")) {
-                File outputLoc = new File(commandLine.getOptionValue("output"));
+                String outputLocation = commandLine.getOptionValue("output");
+                File outputLoc = new File(outputLocation);
                 if (!outputLoc.isDirectory()) {
-                    throw new IllegalArgumentException("Given output location is not a directory: " + commandLine.getOptionValue("output"));
+                    throw new IllegalArgumentException("Given output location is not a directory: " + outputLocation);
                 }
-                ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, clinvarLocation, commandLine.getOptionValue("output"));
+                if(!outputLocation.endsWith("/")) {
+                    outputLocation = commandLine.getOptionValue("output") + "/";
+                }
+                ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, clinvarLocation, outputLocation);
                 fileLoc = clinVarFilter.removeStatus();
             } else {
                 ClinVarFilter clinVarFilter = new ClinVarFilter(StarRating.ZEROSTAR, clinvarLocation, null);
