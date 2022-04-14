@@ -23,11 +23,16 @@ public class AnnotatorMain {
             String genesToPhenotypeLoc = commandLine.getArgList().get(1);
             String fileLocation;
             if (commandLine.hasOption("output")) {
-                File outputLoc = new File(commandLine.getOptionValue("output"));
-                if (!outputLoc.isDirectory()) {
-                    throw new IllegalArgumentException("Given output location is not a directory: " + commandLine.getOptionValue("output"));
+                String outputLocation = commandLine.getOptionValue("output");
+                File outputLoc = new File(outputLocation);
+
+                if (!outputLoc.exists() && !outputLoc.isDirectory()) {
+                    throw new IllegalArgumentException("Given output location is not a directory: " + outputLocation);
                 }
-                GeneHpoAnnotator geneHpoAnnotator = new GeneHpoAnnotator(vcfDataLocation, genesToPhenotypeLoc, commandLine.getOptionValue("output"));
+                if(!commandLine.getOptionValue("output").endsWith("/")) {
+                    outputLocation = commandLine.getOptionValue("output") + "/";
+                }
+                GeneHpoAnnotator geneHpoAnnotator = new GeneHpoAnnotator(vcfDataLocation, genesToPhenotypeLoc, outputLocation);
                 fileLocation = geneHpoAnnotator.annotateVcfWithHpo();
             } else {
                 GeneHpoAnnotator geneHpoAnnotator = new GeneHpoAnnotator(vcfDataLocation, genesToPhenotypeLoc, null);

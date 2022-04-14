@@ -64,11 +64,19 @@ class VariantMatcherTest {
     }
 
     @Test
-    void matchwithClinvar_fakeInput_WithFakeOutputDir() {
-        try {
-            VariantMatcher variantMatcher = new VariantMatcher("/Users/jonathan/Documents/GitHub/GenDecS-tools/data/clinvar_20220205_filtered_ZEROSTAR.vcf", "/Users/jonathan/Documents/GitHub/GenDecS-tools/testdata/pathogenic.vcf", "/Users/jonathan/Documents/GitHub/GenDecS-tools/data");
-        } catch (IllegalArgumentException e) {
-            assertEquals("Given output location is not a directory: /Users/jonathan/Documents/GitHub/GenDecS-tools/data", e.getMessage());
-        }
+    void matchwithClinvar_fakeInput_WithDirNoFwSlash() throws IOException {
+        VariantMatcher variantMatcher = new VariantMatcher("/Users/jonathan/Documents/GitHub/GenDecS-tools/data/clinvar_20220205_filtered_ZEROSTAR.vcf", "/Users/jonathan/Documents/GitHub/GenDecS-tools/testdata/pathogenic.vcf", "/Users/jonathan/Documents/GitHub/GenDecS-tools/data");
+        String fileLocation = variantMatcher.matchWithClinvar();
+        List<String> expectedList = new ArrayList<>();
+        expectedList.add("# This is a test vcf file with pathogenic variants");
+        expectedList.add("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO");
+        expectedList.add("1\t879375\t950448\tC\tT\t.\t.\tALLELEID=929884;CLNDISDB=MedGen:CN517202;CLNDN=not_provided;CLNHGVS=NC_000001.10:g.879375C>T;CLNREVSTAT=criteria_provided,_single_submitter;CLNSIG=Pathogenic;CLNVC=single_nucleotide_variant;CLNVCSO=SO:0001483;GENEINFO=SAMD11:148398;MC=SO:0001587|nonsense;ORIGIN=1;RS=761448939");
+        List<String> listVariants = Files.readAllLines(Path.of(fileLocation));
+        String fileLocationClinvar = fileLocation.replace(".vcf", "");
+        String pathClinvarMatches = fileLocationClinvar + "_ClinvarVariants.vcf";
+
+        Files.delete(Path.of(fileLocation));
+        Files.delete(Path.of(pathClinvarMatches));
+        assertEquals(expectedList, listVariants);
     }
 }
