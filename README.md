@@ -14,7 +14,7 @@ The output is a string with the location of the new filtered ClinVar file.
 
 ### Usage 
 ```
-java -jar ClinVar-Filter-[version].jar [options] [location of clinvar]
+java -jar ClinVar-Filter-[version].jar [options] [--clinvar location of clinvar]
 ```
 --help for options  
 Output: filtered ClinVar file.
@@ -35,7 +35,7 @@ will also work.
 
 ### Usage
 ```
-java -jar Variant-Matcher-[version].jar [options] [location_of_filtered_clinvar] [location_of_vcf_data]
+java -jar Variant-Matcher-[version].jar [options] [--clinvar location_of_filtered_clinvar] [--data location_of_vcf_data]
 ```
 --help for options
 Output: vcf file that is matched with ClinVar
@@ -54,7 +54,7 @@ The output of the VariantMatcher tool is expected as vcf file.
 ### Usage
 
 ```
-java -jar Variant-HPO-Annotator-[version].jar [options] [location_of_vcf_data] [location_of_genes_to_phenotype.txt]
+java -jar Variant-HPO-Annotator-[version].jar [options] [--clinvar location_of_vcf_data] [--genestopheno location_of_genes_to_phenotype.txt]
 ```
 --help for options
 Output: annotated vcf file with HPO terms and disease id's
