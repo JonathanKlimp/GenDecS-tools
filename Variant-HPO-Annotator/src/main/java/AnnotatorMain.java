@@ -50,7 +50,7 @@ public class AnnotatorMain {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.printHelp("help", options);
         System.out.println("program usage: " +
-                "java -jar Variant-HPO-Annotator-[version] [options] [location of vcf data] [location of genes_to_phenotype.txt]");
+                "java -jar Variant-HPO-Annotator-[version] [options] [--data location of vcf data] [--genetopheno location of genes_to_phenotype.txt]");
         System.exit(0);
     }
 }

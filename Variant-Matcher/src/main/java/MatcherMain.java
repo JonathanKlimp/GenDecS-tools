@@ -58,7 +58,7 @@ public class MatcherMain {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.printHelp("help", options);
         System.out.println("program usage: " +
-                "java -jar Variant-Matcher-[version] [options] [location of filtered clinvar] [location of vcf data]");
+                "java -jar Variant-Matcher-[version] [options] [--cinvar location of filtered clinvar] [--data location of vcf data]");
         System.exit(0);
     }
 }

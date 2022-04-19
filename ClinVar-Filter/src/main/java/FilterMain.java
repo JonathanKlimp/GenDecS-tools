@@ -47,7 +47,7 @@ public class FilterMain {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.printHelp("help", options);
         System.out.println("program usage: " +
-                "java -jar ClinVar-Filter-[version] [options] [dir to clinvar]");
+                "java -jar ClinVar-Filter-[version] [options] [--clinvar dir to clinvar]");
         System.exit(0);
     }
 }
