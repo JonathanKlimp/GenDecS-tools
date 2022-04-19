@@ -12,7 +12,6 @@ public class VariantMatcher {
     private final String vcfFile;
     private final File clinvarFile;
     private String outputLocation;
-    private String outputLocationClin;
 
     private static final Logger logger = LogManager.getLogger(VariantMatcher.class);
 
@@ -32,18 +31,13 @@ public class VariantMatcher {
     private void createOutputLocation(String vcfDataLocation, String outputLocation) {
         if (outputLocation == null) {
             String inputFileLoc = vcfDataLocation.replace(".vcf", "");
-            String pathName = inputFileLoc + "_clinvar_matched.vcf";
-            String pathNameClinvar = inputFileLoc + "_clinvar_matched_ClinvarVariants.vcf";
-            this.outputLocation = pathName;
-            this.outputLocationClin = pathNameClinvar;
+            this.outputLocation = inputFileLoc + "_clinvar_matched.vcf";
         } else {
                 File vcfFile = new File(vcfDataLocation);
                 String vcfFileName = vcfFile.getName().replace(".vcf", "");
                 this.outputLocation = outputLocation + vcfFileName + "_clinvar_matched.vcf";
-                this.outputLocationClin = outputLocation + vcfFileName + "_clinvar_matched_ClinvarVariants.vcf";
         }
         logger.debug("output location for the clinvar matched variants: " + this.outputLocation);
-        logger.debug("output location for the clinvar variants that are matched: " + this.outputLocationClin);
     }
 
     /**
@@ -93,10 +87,8 @@ public class VariantMatcher {
     private String getMatchesClinvar(Map<String, Pattern> stringsToFind, ArrayList<String> header) throws IOException {
         Scanner reader = new Scanner(this.clinvarFile);
 
-        File resultFileClinvar = new File(this.outputLocationClin);
         File resultFile = new File(this.outputLocation);
         BufferedWriter writerResult = new BufferedWriter(new FileWriter(resultFile));
-        BufferedWriter writerClinvar = new BufferedWriter(new FileWriter(resultFileClinvar));
 
         for(String headerLine : header) {
             writerResult.write(headerLine + System.getProperty("line.separator"));
@@ -104,22 +96,17 @@ public class VariantMatcher {
 
         while (reader.hasNextLine()) {
             String currentLine = reader.nextLine();
-            if (currentLine.startsWith("#")){
-                writerClinvar.write(currentLine + System.getProperty("line.separator"));
-            }
             for (Pattern stringToFind : stringsToFind.values()) {
                 if (currentLine.matches(String.valueOf(stringToFind))) {
                     logger.trace("Current variant line matched with ClinVar: " + currentLine);
                     writerResult.write(
                             getKeyFromValue(stringsToFind, stringToFind)
                                     + System.getProperty("line.separator"));
-                    writerClinvar.write(
-                            currentLine + System.getProperty("line.separator"));
+
                 }
             }
         }
         reader.close();
-        writerClinvar.close();
         writerResult.close();
         return resultFile.toString();
     }
