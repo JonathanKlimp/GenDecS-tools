@@ -18,15 +18,18 @@ public class MatcherMain {
         CommandLineParser parser = new DefaultParser();
         Options options = new Options();
         options.addOption("o", "output", true, "output directory");
+        options.addOption("c", "clinvar", true, "location of the ClinVar file");
+        options.addOption("d", "data", true, "location of the vcf data");
         options.addOption("h", "help", false, "print the help of the program");
+
 
         try {
             CommandLine commandLine = parser.parse(options, args);
             if (commandLine.hasOption("help")) {
                 printHelp(options);
             }
-            String clinvarLocation = commandLine.getArgList().get(0);
-            String vcfDataLocation = commandLine.getArgList().get(1);
+            String clinvarLocation = commandLine.getOptionValue("clinvar");
+            String vcfDataLocation = commandLine.getOptionValue("data");
             String fileLocation;
             if (commandLine.hasOption("output")) {
                 String outputLocation = commandLine.getOptionValue("output");

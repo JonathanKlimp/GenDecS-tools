@@ -11,6 +11,8 @@ public class AnnotatorMain {
         CommandLineParser parser = new DefaultParser();
         Options options = new Options();
         options.addOption("o", "output", true, "output directory");
+        options.addOption("d", "data", true, "vcf data location");
+        options.addOption("g", "genetopheno", true, "location of genes_to_phenotype.txt");
         options.addOption("h", "help", false, "print the help of the program");
 
         try {
@@ -18,8 +20,8 @@ public class AnnotatorMain {
             if (commandLine.hasOption("help")) {
                 printHelp(options);
             }
-            String vcfDataLocation = commandLine.getArgList().get(0);
-            String genesToPhenotypeLoc = commandLine.getArgList().get(1);
+            String vcfDataLocation = commandLine.getOptionValue("data");
+            String genesToPhenotypeLoc = commandLine.getOptionValue("genetopheno");
             String fileLocation;
             if (commandLine.hasOption("output")) {
                 String outputLocation = commandLine.getOptionValue("output");
