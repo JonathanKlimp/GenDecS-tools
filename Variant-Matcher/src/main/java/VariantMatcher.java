@@ -74,7 +74,9 @@ public class VariantMatcher {
                     stringsToFind.put(currentLine, pattern);
                 }
                 reader.close();
-                return getMatchesClinvar(stringsToFind, header);
+
+                Map<String, Pattern> stringsToWrite = getMatchesClinvar(stringsToFind);
+                return writeResultFile(stringsToWrite, header);
             } else {
                 return this.outputLocation;
             }
@@ -84,31 +86,52 @@ public class VariantMatcher {
         return "";
     }
 
-    private String getMatchesClinvar(Map<String, Pattern> stringsToFind, ArrayList<String> header) throws IOException {
-        Scanner reader = new Scanner(this.clinvarFile);
-
+    private String writeResultFile(Map<String, Pattern> stringsToFind, ArrayList<String> header) throws IOException {
+        logger.info("writing the results to the output file");
         File resultFile = new File(this.outputLocation);
         BufferedWriter writerResult = new BufferedWriter(new FileWriter(resultFile));
-
         for(String headerLine : header) {
             writerResult.write(headerLine + System.getProperty("line.separator"));
         }
+        for (Pattern stringToFind : stringsToFind.values()) {
+            writerResult.write(
+                    getKeyFromValue(stringsToFind, stringToFind)
+                            + System.getProperty("line.separator"));
+        }
+        writerResult.close();
+        return resultFile.getAbsolutePath();
+    }
 
+    private Map<String, Pattern> getMatchesClinvar(Map<String, Pattern> stringsToFind) throws IOException {
+        logger.info("Matching the variants with clinvar");
+        Map<String, Pattern> stringsToWrite = new HashMap<>();
+        Scanner reader = new Scanner(this.clinvarFile);
         while (reader.hasNextLine()) {
+            String alleleid = "";
             String currentLine = reader.nextLine();
             for (Pattern stringToFind : stringsToFind.values()) {
+                String currentKey = getKeyFromValue(stringsToFind, stringToFind);
                 if (currentLine.matches(String.valueOf(stringToFind))) {
                     logger.trace("Current variant line matched with ClinVar: " + currentLine);
-                    writerResult.write(
-                            getKeyFromValue(stringsToFind, stringToFind)
-                                    + System.getProperty("line.separator"));
+                    String infoString = currentLine.split("\t")[7];
+                    for (String info: infoString.split(";")) {
+                        if (info.contains("ALLELEID")) {
+                            alleleid = info.split("=")[1];
+                        }
+                    }
+                    stringsToWrite.put(currentKey + '|' + alleleid, stringToFind);
 
                 }
             }
         }
         reader.close();
-        writerResult.close();
-        return resultFile.toString();
+        for (Pattern stringToFind : stringsToFind.values()) {
+            if (!stringsToWrite.containsValue(stringToFind)) {
+                String key = getKeyFromValue(stringsToFind, stringToFind);
+                stringsToWrite.put(key + '|', stringToFind);
+            }
+        }
+        return stringsToWrite;
     }
 
     private static String getKeyFromValue(Map<String, Pattern> map, Pattern value) {
