@@ -86,25 +86,23 @@ public class VariantMatcher {
         return "";
     }
 
-    private String writeResultFile(Map<String, Pattern> stringsToFind, ArrayList<String> header) throws IOException {
+    private String writeResultFile(Map<String, Pattern> stringsToWrite, ArrayList<String> header) throws IOException {
         logger.info("writing the results to the output file");
         File resultFile = new File(this.outputLocation);
         BufferedWriter writerResult = new BufferedWriter(new FileWriter(resultFile));
         for(String headerLine : header) {
             writerResult.write(headerLine + System.getProperty("line.separator"));
         }
-        for (Pattern stringToFind : stringsToFind.values()) {
-            writerResult.write(
-                    getKeyFromValue(stringsToFind, stringToFind)
-                            + System.getProperty("line.separator"));
+        for (Map.Entry<String, Pattern> entry : stringsToWrite.entrySet()) {
+            writerResult.write(entry.getKey() + System.getProperty("line.separator"));
         }
         writerResult.close();
         return resultFile.getAbsolutePath();
     }
 
-    private Map<String, Pattern> getMatchesClinvar(Map<String, Pattern> stringsToFind) throws IOException {
+    private TreeMap<String, Pattern> getMatchesClinvar(Map<String, Pattern> stringsToFind) throws IOException {
         logger.info("Matching the variants with clinvar");
-        Map<String, Pattern> stringsToWrite = new HashMap<>();
+        TreeMap<String, Pattern> stringsToWrite = new TreeMap<>();
         Scanner reader = new Scanner(this.clinvarFile);
         while (reader.hasNextLine()) {
             String alleleid = "";
