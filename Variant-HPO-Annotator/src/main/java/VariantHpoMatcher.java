@@ -56,7 +56,7 @@ public class VariantHpoMatcher {
                     String hpoId = lineSplit[2];
                     String hpoTerm = lineSplit[3];
                     String diseaseId = lineSplit[8];
-                    hpoTerms.add(hpoTerm.trim());
+                    hpoTerms.add(hpoTerm.trim().replace(",", ";"));
                     diseases.add(diseaseId.trim());
                 }
             }
