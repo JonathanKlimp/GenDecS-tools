@@ -29,6 +29,7 @@ new file with the matched variants will be written.
 * ClinVar data file.    
 
 For the vcf file [V.I.P](https://github.com/molgenis/vip) output is expected.  
+Example data can be found in the gendecsTestData folder.  
 For the ClinVar file the output of the ClinVar is expected but a ClinVar file 
 downloaded from [Clinvar](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/)
 will also work.
