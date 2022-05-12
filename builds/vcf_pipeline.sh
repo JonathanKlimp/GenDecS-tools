@@ -1,15 +1,25 @@
 #!/usr/bin/env bash
   set -e
 
-while getopts f:o:c:g: flag
+usage="$(basename "${0}"):usage: [-h for help] [-f vcf data file] | [-o output directory] | [-c clinvar file] | [-g genes_to_phenotype.txt]"
+
+while getopts f:o:c:g:h: flag
 do
     case "${flag}" in
         f) vcf_file=${OPTARG};;
         o) output_dir=${OPTARG};;
         c) clinvar_file=${OPTARG};;
         g) genes_to_phenotype=${OPTARG};;
-        *) echo "$(basename "${0}"):usage: [-f vcf data file] | [-o output directory] | [-c clinvar file] | [-g genes_to_phenotype.txt]"
-           exit 1;;
+        h) echo "$usage"
+           exit
+           ;;
+        :) printf "missing argument for -%s\n" "$OPTARG" >&4
+           echo "$usage" >&4
+           exit 1
+           ;;
+        *) echo "$usage"
+           exit 1
+           ;;
     esac
 done
 
