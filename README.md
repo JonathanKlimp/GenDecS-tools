@@ -59,3 +59,17 @@ java -jar Variant-HPO-Annotator-[version].jar [options] [--clinvar location_of_v
 ```
 --help for options
 Output: annotated vcf file with HPO terms and disease ids.
+
+## Example
+
+This is an example for GenDecS. This example will process al data
+present in gendecsTestData and upload it to emx2.
+
+* Make sure you are running molgenis emx2
+* On the terminal navigate to the directory gendecsTestData/
+* Once in the dir execute the following query:
+
+This query loops through each file in the directory and executes the pipeline to process upload the data.
+```
+for FILE in *; do sh pipeline.sh -f $FILE -o [output dir] -c [path to clinvar] -g [path to genes_to_phenotype.txt]; done
+```
