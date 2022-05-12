@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
   set -e
 
-usage="$(basename "${0}"):usage: [-h for help] [-f vcf data file] | [-o output directory] | [-c clinvar file] | [-g genes_to_phenotype.txt]"
+usage="$(basename "${0}") usage: [-h for help] [-f vcf data file] | [-o output directory] | [-c clinvar file] | [-g genes_to_phenotype.txt]"
+
+if [ $# -lt 4 ]; then
+    echo "$usage"
+    exit 1
+fi
 
 while getopts f:o:c:g:h: flag
 do
@@ -13,8 +18,8 @@ do
         h) echo "$usage"
            exit
            ;;
-        :) printf "missing argument for -%s\n" "$OPTARG" >&4
-           echo "$usage" >&4
+        :) printf "missing argument for -%s\n" "$OPTARG" >&2
+           echo "$usage" >&2
            exit 1
            ;;
         *) echo "$usage"
