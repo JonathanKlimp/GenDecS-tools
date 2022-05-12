@@ -4,8 +4,8 @@ This repository contains the tools that are used to process and annotate VCF dat
 These tools are:
 
 ## ClinVar filter
-a ClinVar filter which filters ClinVar on high quality variants and pathogenic/
-likely pathogenic/ uncertain significance.  
+A ClinVar filter which filters ClinVar on variants with a quality rating of at least one star
+and which are pathogenic/likely pathogenic/ or have an uncertain significance.  
 The output is a string with the location of the new filtered ClinVar file.
 
 
@@ -21,8 +21,8 @@ Output: filtered ClinVar file.
 
 ## VariantMatcher
 
-A tool that filters variants from an input vcf data file on if they are present in ClinVar. A
-new file with the matched variants will be written.
+Tool that matches variants with ClinVar. If a variant is present in ClinVar the alleleid is annotated to said variant.  
+A new file with the matched variants will be written.
 
 ### Requirements
 * A vcf file with variant data 
@@ -58,4 +58,4 @@ The output of the VariantMatcher tool is expected as vcf file.
 java -jar Variant-HPO-Annotator-[version].jar [options] [--clinvar location_of_vcf_data] [--genestopheno location_of_genes_to_phenotype.txt]
 ```
 --help for options
-Output: annotated vcf file with HPO terms and disease id's
+Output: annotated vcf file with HPO terms and disease ids.
