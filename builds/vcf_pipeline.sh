@@ -36,7 +36,7 @@ clinvar_name="${clinvar_file##*/}"
 clinvar_file="${clinvar_name%.*}"
 filtered_clinvar="$output_dir""$clinvar_file""_filtered_ZEROSTAR.vcf"
 
-java -jar Variant-Matcher-2.0.3.jar --output "$output_dir" --clinvar "$filtered_clinvar" --data "$vcf_file"
+java -jar Variant-Matcher-2.1.3.jar --output "$output_dir" --clinvar "$filtered_clinvar" --data "$vcf_file"
 
 # extract the file name from the given directory
 # and add the output name
