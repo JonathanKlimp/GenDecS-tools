@@ -3,6 +3,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class MatcherMain {
@@ -46,11 +47,30 @@ public class MatcherMain {
                 VariantMatcher variantMatcher = new VariantMatcher(clinvarLocation, vcfDataLocation, null);
                 fileLocation = variantMatcher.matchWithClinvar();
             }
+            File sortScript = new File("Variant-Matcher/src/main/sortVcf.sh");
+            sortFile(fileLocation, sortScript.getAbsolutePath());
+
             logger.info("Created the filtered file at the following location: " + fileLocation);
             System.exit(0);
         }
         catch (ParseException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void sortFile(String resultFileLoc, String scriptLoc) {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        String scriptArgument = String.format("sh %s -f %s",scriptLoc, resultFileLoc);
+        processBuilder.command(scriptArgument);
+        try {
+            Process process = Runtime.getRuntime().exec(scriptArgument);
+            int exitCode = process.waitFor();
+            logger.info("\nExited vcf sorter with error code : " + exitCode);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

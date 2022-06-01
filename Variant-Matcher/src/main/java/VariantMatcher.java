@@ -48,59 +48,61 @@ public class VariantMatcher {
      * @return String with the location of the new file.
      */
     public String matchWithClinvar() {
-        File outputFile = new File(this.outputLocation);
-        Map<String, Pattern> stringsToFind = new HashMap<>();
         try {
-            if (outputFile.createNewFile()) {
-                ArrayList<String> header = new ArrayList<>();
+            File resultFile = new File(this.outputLocation);
+            if (resultFile.createNewFile()) {
+                BufferedWriter writerResult = new BufferedWriter(new FileWriter(resultFile));
                 File vcfFile = new File(this.vcfFile);
                 Scanner reader = new Scanner(vcfFile);
                 logger.info("Building regex of the variants in: " + vcfFile.getAbsolutePath());
-                while (reader.hasNextLine()) {
-                    String currentLine = reader.nextLine();
-                    if (currentLine.startsWith("#")) {
-                        header.add(currentLine);
-                        continue;
-                    }
-                    String[] splittedData = currentLine.split("\t");
-                    String chromosome = splittedData[0];
-                    String position = splittedData[1];
-                    String ref = splittedData[3];
-                    String alt = splittedData[4];
-                    Pattern pattern =
-                            Pattern.compile(
-                                    String.format("%s\\t%s\\t[0-9]+\\t%s\\t%s.+", chromosome, position, ref, alt));
-                    logger.trace("Created the following pattern: " + pattern + "for this line: " + currentLine);
-                    stringsToFind.put(currentLine, pattern);
-                }
-                reader.close();
+                Map<String, Pattern> stringsToFind = createStringPatterns(reader, writerResult);
 
-                Map<String, Pattern> stringsToWrite = getMatchesClinvar(stringsToFind);
-                return writeResultFile(stringsToWrite, header);
-            } else {
-                return this.outputLocation;
+                getMatchesClinvar(stringsToFind, writerResult);
+                writerResult.close();
             }
+            return resultFile.getAbsolutePath();
         } catch(IOException e){
             e.printStackTrace();
         }
         return "";
     }
 
-    private String writeResultFile(Map<String, Pattern> stringsToWrite, ArrayList<String> header) throws IOException {
-        logger.info("writing the results to the output file");
-        File resultFile = new File(this.outputLocation);
-        BufferedWriter writerResult = new BufferedWriter(new FileWriter(resultFile));
+    private Map<String, Pattern> createStringPatterns(Scanner reader, BufferedWriter writerResult) {
+        ArrayList<String> header = new ArrayList<>();
+        Map<String, Pattern> stringsToFind = new HashMap<>();
+        while (reader.hasNextLine()) {
+            String currentLine = reader.nextLine();
+            if (currentLine.startsWith("#")) {
+                header.add(currentLine);
+                continue;
+            }
+            String[] splittedData = currentLine.split("\t");
+            String chromosome = splittedData[0];
+            String position = splittedData[1];
+            String ref = splittedData[3];
+            String alt = splittedData[4];
+            Pattern pattern =
+                    Pattern.compile(
+                            String.format("%s\\t%s\\t[0-9]+\\t%s\\t%s.+", chromosome, position, ref, alt));
+            logger.trace("Created the following pattern: " + pattern + "for this line: " + currentLine);
+            stringsToFind.put(currentLine, pattern);
+        }
+        reader.close();
+        try {
+            this.writeHeader(header, writerResult);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringsToFind;
+    }
+
+    private void writeHeader(ArrayList<String> header, BufferedWriter writerResult) throws IOException {
         for(String headerLine : header) {
             writerResult.write(headerLine + System.getProperty("line.separator"));
         }
-        for (Map.Entry<String, Pattern> entry : stringsToWrite.entrySet()) {
-            writerResult.write(entry.getKey() + System.getProperty("line.separator"));
-        }
-        writerResult.close();
-        return resultFile.getAbsolutePath();
     }
 
-    private TreeMap<String, Pattern> getMatchesClinvar(Map<String, Pattern> stringsToFind) throws IOException {
+    private void getMatchesClinvar(Map<String, Pattern> stringsToFind, BufferedWriter writerResult) throws IOException {
         logger.info("Matching the variants with clinvar");
         TreeMap<String, Pattern> stringsToWrite = new TreeMap<>();
         Scanner reader = new Scanner(this.clinvarFile);
@@ -117,19 +119,19 @@ public class VariantMatcher {
                             alleleid = info.split("=")[1];
                         }
                     }
+                    writerResult.write(currentKey + '|' + alleleid + System.getProperty("line.separator"));
                     stringsToWrite.put(currentKey + '|' + alleleid, stringToFind);
-
                 }
             }
         }
         reader.close();
+        // write variants to result file that were not found in ClinVar
         for (Pattern stringToFind : stringsToFind.values()) {
             if (!stringsToWrite.containsValue(stringToFind)) {
                 String key = getKeyFromValue(stringsToFind, stringToFind);
-                stringsToWrite.put(key + '|', stringToFind);
+                writerResult.write(key + '|' + System.getProperty("line.separator"));
             }
         }
-        return stringsToWrite;
     }
 
     private static String getKeyFromValue(Map<String, Pattern> map, Pattern value) {
