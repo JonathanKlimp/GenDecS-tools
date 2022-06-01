@@ -47,7 +47,8 @@ public class MatcherMain {
                 VariantMatcher variantMatcher = new VariantMatcher(clinvarLocation, vcfDataLocation, null);
                 fileLocation = variantMatcher.matchWithClinvar();
             }
-            File sortScript = new File("Variant-Matcher/src/main/sortVcf.sh");
+            File sortScript = new File("sortVcf.sh");
+            System.out.println(sortScript.getAbsolutePath());
             sortFile(fileLocation, sortScript.getAbsolutePath());
 
             logger.info("Created the filtered file at the following location: " + fileLocation);

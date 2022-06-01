@@ -25,7 +25,8 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes(
-                'Main-Class': 'MatcherMain'
+//                'Main-Class': 'GenDecS-tools.Variant-Matcher.main'
+                'Main-class': 'MatcherMain'
         )
     }
     from {
