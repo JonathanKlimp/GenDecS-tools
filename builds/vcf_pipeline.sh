@@ -28,7 +28,7 @@ do
     esac
 done
 
-java -jar ClinVar-Filter-2.0.2.jar --output "$output_dir" --clinvar "$clinvar_file"
+java -jar ClinVar-Filter-2.0.3.jar --output "$output_dir" --clinvar "$clinvar_file"
 
 # extract the file name from the given directory
 # and add the output name

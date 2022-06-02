@@ -1,10 +1,7 @@
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class ClinVarFilter {
@@ -48,11 +45,13 @@ public class ClinVarFilter {
                 logger.info("Creating file: " + this.outputLocation);
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter(this.outputLocation));
+                BufferedReader reader = new BufferedReader(new FileReader(this.clinvarFile));
 
-                Scanner reader = new Scanner(this.clinvarFile);
-                logger.info("Removing " + this.starRating + "from: " + this.clinvarFile);
-                while (reader.hasNextLine()) {
-                    String currentLine = reader.nextLine();
+                logger.info("Removing " + this.starRating + " from: " + this.clinvarFile);
+                String currentLine;
+
+                while ((currentLine = reader.readLine()) != null) {
+                    // If line contains anything from given rating skip this line.
                     if (stringContainsItemFromList(
                             currentLine, Objects.requireNonNull(getRating(this.starRating)))) {
                         continue;
