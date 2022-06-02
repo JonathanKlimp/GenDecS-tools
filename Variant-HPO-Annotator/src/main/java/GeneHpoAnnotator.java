@@ -45,6 +45,7 @@ public class GeneHpoAnnotator {
             File annotatedFile = new File(this.outputLocation);
             BufferedWriter writer = new BufferedWriter(new FileWriter(annotatedFile));
             VariantHpoMatcher variantHpoMatcher = new VariantHpoMatcher();
+            logger.info("creating file " + annotatedFile.getAbsolutePath());
 
             while (reader.hasNextLine()) {
                 String currentLine = reader.nextLine();
@@ -62,6 +63,7 @@ public class GeneHpoAnnotator {
             }
             reader.close();
             writer.close();
+            logger.info("Annotated the file " + annotatedFile.getAbsolutePath() + " with HPO terms and disease ids");
             return annotatedFile.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();

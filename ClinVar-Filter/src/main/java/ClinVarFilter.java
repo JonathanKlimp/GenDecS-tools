@@ -45,12 +45,12 @@ public class ClinVarFilter {
         File filteredClinVar = new File(this.outputLocation);
         try {
             if (filteredClinVar.createNewFile()) {
-                logger.debug("Creating file: " + this.outputLocation);
+                logger.info("Creating file: " + this.outputLocation);
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter(this.outputLocation));
 
                 Scanner reader = new Scanner(this.clinvarFile);
-                logger.debug("Removing " + this.starRating + "from: " + this.clinvarFile);
+                logger.info("Removing " + this.starRating + "from: " + this.clinvarFile);
                 while (reader.hasNextLine()) {
                     String currentLine = reader.nextLine();
                     if (stringContainsItemFromList(
