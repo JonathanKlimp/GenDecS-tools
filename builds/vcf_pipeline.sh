@@ -36,7 +36,7 @@ clinvar_name="${clinvar_file##*/}"
 clinvar_file="${clinvar_name%.*}"
 filtered_clinvar="$output_dir""$clinvar_file""_filtered_ZEROSTAR.vcf"
 
-java -jar Variant-Matcher-2.1.3.jar --output "$output_dir" --clinvar "$filtered_clinvar" --data "$vcf_file"
+java -jar Variant-Matcher-2.1.4.jar --output "$output_dir" --clinvar "$filtered_clinvar" --data "$vcf_file"
 
 # extract the file name from the given directory
 # and add the output name
@@ -44,7 +44,7 @@ file_name="${vcf_file##*/}"
 file="${file_name%.*}"
 filtered_vcf="$output_dir""$file""_clinvar_matched.vcf"
 
-java -jar Variant-HPO-Annotator-2.0.3.jar --output "$output_dir" --data "$filtered_vcf" --genetopheno "$genes_to_phenotype"
+java -jar Variant-HPO-Annotator-2.0.4.jar --output "$output_dir" --data "$filtered_vcf" --genetopheno "$genes_to_phenotype"
 
 annotated_vcf="$output_dir""$file""_clinvar_matched_annotated_hpo.vcf"
 

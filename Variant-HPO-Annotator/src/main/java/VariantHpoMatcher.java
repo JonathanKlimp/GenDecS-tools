@@ -1,8 +1,6 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -47,9 +45,10 @@ public class VariantHpoMatcher {
         ArrayList<String> hpoTerms = new ArrayList<>();
         ArrayList<String> diseases = new ArrayList<>();
         try {
-            Scanner reader = new Scanner(genesToPhenotype);
-            while (reader.hasNextLine()) {
-                String currentLine = reader.nextLine();
+            BufferedReader reader = new BufferedReader(new FileReader(genesToPhenotype));
+
+            String currentLine;
+            while ((currentLine = reader.readLine()) != null) {
                 if (currentLine.contains(geneSymbol)) {
                     String[] lineSplit = currentLine.split("\t");
                     String gene = lineSplit[1];
@@ -65,6 +64,8 @@ public class VariantHpoMatcher {
             return termsAndDiseases;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return termsAndDiseases;
     }

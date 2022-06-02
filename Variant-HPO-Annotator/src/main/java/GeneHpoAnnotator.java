@@ -1,10 +1,6 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -40,15 +36,15 @@ public class GeneHpoAnnotator {
      */
     public String annotateVcfWithHpo() {
         try {
-            Scanner reader = new Scanner(this.vcfDatalocation);
+            BufferedReader reader = new BufferedReader(new FileReader(this.vcfDatalocation));
 
             File annotatedFile = new File(this.outputLocation);
             BufferedWriter writer = new BufferedWriter(new FileWriter(annotatedFile));
             VariantHpoMatcher variantHpoMatcher = new VariantHpoMatcher();
             logger.info("creating file " + annotatedFile.getAbsolutePath());
 
-            while (reader.hasNextLine()) {
-                String currentLine = reader.nextLine();
+            String currentLine;
+            while ((currentLine = reader.readLine()) != null) {
                 if (currentLine.startsWith("#")) {
                     writer.write(currentLine + System.getProperty("line.separator"));
                 } else {
