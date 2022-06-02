@@ -5,6 +5,11 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Object VariantMatcher is constructed with a vcf data file and output location.
+ * It has the method matchWithClinvar which annotates each variant with the clinvar allelid if it is present in clinvar.
+ *
+ */
 public class VariantMatcher {
     private final String vcfFile;
     private final File clinvarFile;
@@ -105,10 +110,12 @@ public class VariantMatcher {
 
     private void getMatchesClinvar(Map<String, Pattern> stringsToFind, BufferedWriter writerResult) throws IOException {
         logger.info("Matching the variants with clinvar");
-        TreeMap<String, Pattern> stringsToWrite = new TreeMap<>();
+        HashMap<String, Pattern> stringsToWrite = new HashMap<>();
         BufferedReader reader = new BufferedReader(new FileReader(this.clinvarFile));
         String currentLine;
+        int count = 0;
         while ((currentLine = reader.readLine()) != null) {
+            count++;
             String alleleid = "";
             for (Pattern stringToFind : stringsToFind.values()) {
                 String currentKey = getKeyFromValue(stringsToFind, stringToFind);
@@ -123,6 +130,9 @@ public class VariantMatcher {
                     writerResult.write(currentKey + '|' + alleleid + System.getProperty("line.separator"));
                     stringsToWrite.put(currentKey + '|' + alleleid, stringToFind);
                 }
+            }
+            if (count % 50000 == 0) {
+                logger.info("Currently at line: " + count);
             }
         }
         reader.close();
