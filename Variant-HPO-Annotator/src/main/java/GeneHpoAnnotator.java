@@ -4,6 +4,10 @@ import java.util.HashMap;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+/**
+ * Object GeneHpoAnnotator with public method annotateVcfWithHpo which annotates the given vcf file
+ * with the associated HPO terms for each variant. It adds these to the file with the character '|'
+ */
 public class GeneHpoAnnotator {
     private static final Logger logger = LogManager.getLogger(GeneHpoAnnotator.class);
 
@@ -31,7 +35,7 @@ public class GeneHpoAnnotator {
     }
 
     /**
-     * Static method that reads a vcf file and annotates each variant with its associated HPO terms.
+     * Method that reads a vcf file and annotates each variant with its associated HPO terms.
      * @return String with the new written file location.
      */
     public String annotateVcfWithHpo() {

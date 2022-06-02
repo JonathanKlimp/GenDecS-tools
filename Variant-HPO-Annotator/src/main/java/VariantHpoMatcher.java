@@ -1,9 +1,16 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+/**
+ * Object VariantHpoMatcher which matches a given variant String with its associates HPO terms found in
+ * genes_to_phenotype.txt.
+ * The method matchVariantWithHpo is the method that matches the variants with HPO terms. It uses
+ * the methods getGene and getHPO which are also public.
+ */
 public class VariantHpoMatcher {
     private static final Logger logger = LogManager.getLogger(VariantHpoMatcher.class);
 
@@ -61,6 +68,7 @@ public class VariantHpoMatcher {
             }
             termsAndDiseases.put("hpoTerms", hpoTerms);
             termsAndDiseases.put("diseaseIds", diseases);
+            logger.trace("Found the following HPO terms and diseases for the gene " + geneSymbol + ": " + hpoTerms + diseases);
             return termsAndDiseases;
         } catch (FileNotFoundException e) {
             e.printStackTrace();

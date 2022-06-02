@@ -4,6 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Object ClinVarFilter filters a given ClinVar file on a given <a href="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/">star rating</a>
+ * from zero to 4.
+ * It has a public method removeStatus() which creates a new file names the same as the given input file
+ * with _filtered_(star rating) added. This new file is the filtered version of the original.
+ */
 public class ClinVarFilter {
     private final StarRating starRating;
     private final File clinvarFile;
@@ -12,6 +18,7 @@ public class ClinVarFilter {
 
     /**
      *
+     * If the given outputlocation is null the directory of the ClinVar file is used.
      * @param starRating Star rating that needs to be removed from ClinVar
      * @param clinvarLocation location of the ClinVar file
      * @param outputLocation location of the desired output directory. If null the output directory
