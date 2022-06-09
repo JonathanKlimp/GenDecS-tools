@@ -71,5 +71,10 @@ present in gendecsTestData and upload it to emx2.
 
 This query loops through each file in the directory and executes the pipeline to process upload the data.
 ```
-for FILE in *; do sh pipeline.sh -f $FILE -o [output dir] -c [path to clinvar] -g [path to genes_to_phenotype.txt]; done
+for FILE in *; do sh GenDecS_filter_and_upload_pipeline.sh -f $FILE -o [output dir] -c [path to clinvar] -g [path to genes_to_phenotype.txt]; done
 ```
+
+### Contact
+
+Jonathan Klimp
+email: j.klimp@st.hanze.nl
