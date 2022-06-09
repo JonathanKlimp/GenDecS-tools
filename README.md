@@ -55,7 +55,7 @@ The output of the VariantMatcher tool is expected as vcf file.
 ### Usage
 
 ```
-java -jar Variant-HPO-Annotator-[version].jar --clinvar [location_of_vcf_data] --genestopheno [location_of_genes_to_phenotype.txt] --ouput [output directory]
+java -jar Variant-HPO-Annotator-[version].jar --data [location_of_vcf_data] --genestopheno [location_of_genes_to_phenotype.txt] --ouput [output directory]
 ```
 --help for options
 Output: annotated vcf file with HPO terms and disease ids.
