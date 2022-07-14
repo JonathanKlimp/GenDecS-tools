@@ -11,8 +11,7 @@ The output is a string with the location of the new filtered ClinVar file.
 
 ### Requirements
 * ClinVar vcf file which can be downloaded from: [Clinvar](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/).  
-  [clinvar_20220528.vcf.gz](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/) is used during development.
-* Version used during development: 
+  Version used during development: [clinvar_20220528.vcf.gz](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/) 
 
 ### Usage 
 ```
@@ -27,12 +26,12 @@ Tool that matches variants with ClinVar. If a variant is present in ClinVar the 
 A new file with the matched variants will be written.
 
 ### Requirements
-* A vcf file with variant data 
+* A vcf file with variant data (VIP output)
 * ClinVar data file.    
 
 For the vcf file [V.I.P](https://github.com/molgenis/vip) output is expected.  
 Example data can be found in the gendecsTestData folder.  
-For the ClinVar file the output of the ClinVar is expected but a ClinVar file 
+For the ClinVar file the output of the ClinVar-Filter is expected but a ClinVar file 
 downloaded from [Clinvar](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/)
 will also work.
 
@@ -49,9 +48,9 @@ A vcf input file is parsed and for each variant present the associated HPO terms
 to the variant line.
 
 ### Requirements
-* [genes_to_phenotype.txt](https://hpo.jax.org/app/download/annotation)  
- Version used during development: [genes_to_phenotype.txt](https://github.com/obophenotype/human-phenotype-ontology/releases/tag/v2022-04-14). 
-* vcf file
+* genes to phenotype file: [genes_to_phenotype.txt](https://hpo.jax.org/app/download/annotation)  
+  Version used during development: [genes_to_phenotype.txt](https://github.com/obophenotype/human-phenotype-ontology/releases/tag/v2022-04-14). 
+* vcf file output from [V.I.P](https://github.com/molgenis/vip)
 
 The output of the VariantMatcher tool is expected as vcf file.
 
@@ -79,5 +78,5 @@ for FILE in *; do sh GenDecS_filter_and_upload_pipeline.sh -f $FILE -o [output d
 
 ### Contact
 
-Jonathan Klimp
+Jonathan Klimp  
 email: j.klimp@st.hanze.nl
