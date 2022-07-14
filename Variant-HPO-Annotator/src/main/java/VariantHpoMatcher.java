@@ -58,8 +58,6 @@ public class VariantHpoMatcher {
             while ((currentLine = reader.readLine()) != null) {
                 if (currentLine.contains(geneSymbol)) {
                     String[] lineSplit = currentLine.split("\t");
-                    String gene = lineSplit[1];
-                    String hpoId = lineSplit[2];
                     String hpoTerm = lineSplit[3];
                     String diseaseId = lineSplit[8];
                     hpoTerms.add(hpoTerm.trim().replace(",", ";"));
