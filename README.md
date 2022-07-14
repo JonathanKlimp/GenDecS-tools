@@ -10,11 +10,13 @@ The output is a string with the location of the new filtered ClinVar file.
 
 
 ### Requirements
-* ClinVar vcf file which can be downloaded from: [Clinvar](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/)
+* ClinVar vcf file which can be downloaded from: [Clinvar](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/).  
+  [clinvar_20220528.vcf.gz](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/) is used during development.
+* Version used during development: 
 
 ### Usage 
 ```
-java -jar ClinVar-Filter-[version].jar [options] [--clinvar location of clinvar]
+java -jar ClinVar-Filter-[version].jar --clinvar [location of clinvar] --output [output directory]
 ```
 --help for options  
 Output: filtered ClinVar file.
@@ -36,7 +38,7 @@ will also work.
 
 ### Usage
 ```
-java -jar Variant-Matcher-[version].jar [options] [--clinvar location_of_filtered_clinvar] [--data location_of_vcf_data]
+java -jar Variant-Matcher-[version].jar --clinvar [location_of_filtered_clinvar] --data [location_of_vcf_data] --output [output directory]
 ```
 --help for options
 Output: vcf file that is matched with ClinVar
@@ -47,7 +49,8 @@ A vcf input file is parsed and for each variant present the associated HPO terms
 to the variant line.
 
 ### Requirements
-* [genes_to_phenotype.txt](https://hpo.jax.org/app/download/annotation)
+* [genes_to_phenotype.txt](https://hpo.jax.org/app/download/annotation)  
+ Version used during development: [genes_to_phenotype.txt](https://github.com/obophenotype/human-phenotype-ontology/releases/tag/v2022-04-14). 
 * vcf file
 
 The output of the VariantMatcher tool is expected as vcf file.
@@ -55,7 +58,7 @@ The output of the VariantMatcher tool is expected as vcf file.
 ### Usage
 
 ```
-java -jar Variant-HPO-Annotator-[version].jar [options] [--clinvar location_of_vcf_data] [--genestopheno location_of_genes_to_phenotype.txt]
+java -jar Variant-HPO-Annotator-[version].jar --clinvar [location_of_vcf_data] --genestopheno [location_of_genes_to_phenotype.txt] --output [output directory]
 ```
 --help for options
 Output: annotated vcf file with HPO terms and disease ids.
